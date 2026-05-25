@@ -3,11 +3,55 @@ import {
     Text, // Para exibir textos (= p, h1...)
     TouchableOpacity, // Para botões clicáveis (= button)
     ScrollView, // Para a área principal com scroll,
-    StyleSheet // Para aplicar estilo na página
+    StyleSheet, // Para aplicar estilo na página,
+    Image,
+    FlatList,
+    TextInput
    } from 'react-native'; // Importa os componentes View e Text
+   import {useState} from 'react';
    import {Link} from 'expo-router';
    
   export default function Cursos() {
+    const cursos = [
+      {
+        id: '1',
+        titulo: 'Desenvolvimento WEB',
+        img: require('../../assets/images/desweb.jpg'),
+        url: '/curso1',
+        descricao: 'Aprenda HTML, CSS, Javascript e práticas modernas de desenvolvimento',
+        ch: 40
+      },
+
+      {
+        id: '2',
+        titulo: 'Informática Básica',
+        img: require('../../assets/images/info.jpg'),
+        url: '/curso2',
+        descricao: 'Domine o uso do computador e aplicativos essenciais',
+        ch: 30
+      },
+      
+      {
+        id: '3',
+        titulo: 'Desenvolvimento de Games',
+        img: require('../../assets/images/desgame.webp'),
+        url: '/curso3',
+        descricao: 'Aprenda a desenvolver games de forma legal e criativa',
+        ch: 80
+      },
+
+
+    ];
+
+    const [busca, setBusca] = useState('');
+
+    const cursosFiltrados = cursos.filter( 
+      (curso) => {
+          curso.titulo.toLowerCase().includes(busca.toLocaleLowerCase())
+      }
+
+    )
+
    return (
       <ScrollView>
           { /*=========== TOPO (HEADER) =============*/}

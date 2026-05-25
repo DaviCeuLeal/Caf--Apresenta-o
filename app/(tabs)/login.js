@@ -66,8 +66,9 @@ import {
                         <Text style={styles.linkAuth}>
                             Ainda não possui uma conta?
                         </Text>
-                        <Link href='/cadastro'>
-                            <Text style={styles.linkAuthDestaque}>
+                      
+                        <Link style={styles.linkAuthDestaque} href='/cadastro'>
+                            <Text>
                                 Fazer Cadastro
                             </Text>
                         </Link>
@@ -144,6 +145,7 @@ import {
 
       blocoAuth: {
         backgroundColor: '#fffff',
+        gap: 10,
         padding: 30,
         borderRadius: 8,
         elevation: 3,
@@ -167,7 +169,8 @@ import {
         linkAuth: {
             textAlign:'center',
             marginTop: 20,
-            color: '#222'
+            color: '#222',
+            fontWeight: 'bold'
         },
 
         linkAuthDestaque: {
@@ -205,6 +208,21 @@ import {
             fontSize: 16,
             backgroundColor: '#ffffff'
         },
+
+        btnPrimario: {
+          backgroundColor: '#ff6a00',
+          paddingVertical: 12,
+          paddingHorizontal: 20,
+          borderRadius: 8,
+          marginTop: 10
+        },
+
+        textoBotao: {
+          color: '#ffffff',
+          fontWeight: 'bold',
+          textAlign: 'center'
+        },
+
 
       rodape: {
         backgroundColor: '#1a4db3',
