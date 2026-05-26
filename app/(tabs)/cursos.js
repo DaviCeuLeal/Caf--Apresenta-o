@@ -47,8 +47,10 @@ import {
 
     const cursosFiltrados = cursos.filter( 
       (curso) => {
-          curso.titulo.toLowerCase().includes(busca.toLocaleLowerCase())
+         return curso.titulo.toLowerCase().includes(busca.toLocaleLowerCase())
       }
+
+    
 
     )
 
@@ -83,7 +85,58 @@ import {
           </View>
 
           { /*=========== CONTEÚDO DA PÁGINA =============*/}
-          
+          <View style={styles.cursos}>
+            <Text style={styles.tituloPagina}>
+              Nossos cursos
+            </Text>
+
+            <TextInput
+              style={styles.buscarCursos}
+              placeholder="Buscar Cursos"
+              value={busca}
+              onChangeText={setBusca}
+            ></TextInput>
+
+
+            <FlatList
+              data={cursosFiltrados}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                // card do curso aqui
+                <View style={styles.curso}>
+
+                  <Text style={styles.cursoTitulo}>
+                      {item.titulo}
+                  </Text>
+
+                  <Image style={styles.cursoImagem} source={item.img} ></Image>
+
+                  <Text style={styles.cursoDescricao}>
+                    {item.descricao}
+                  </Text>
+
+                  <Text style={styles.cursoCH}>
+                    CH: {item.ch}h
+                  </Text>
+
+                  <Link style={styles.cursoBtnLink} href={item.url}>
+                    <TouchableOpacity style={styles.btnCurso}>
+                      <Text style={styles.textoBtnCurso}>
+                        Ver detalhes
+                      </Text>
+                    </TouchableOpacity>
+                  </Link>
+
+                </View>
+
+              )} 
+            />
+            
+  
+            </View>
+
+
+
 
           { /*=========== RODAPÉ =============*/}
           { /* Parte final da página */}
@@ -136,8 +189,89 @@ import {
       ativo: {
         color: '#ff6a00',
       },
+
+      tituloPagina: {
+        fontSize: 28,
+        color: '#1a4db3',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 10,
+      },
+
+      cursos: {
+        alignItems: 'center',
+        backgroundColor: 'white'
+      },
+
+      buscarCursos: {
+        backgroundColor: 'white',
+        textAlign: 'center',
+        alignItems: 'center',
+        borderColor: 'black',
+        borderWidth: 1,
+        borderRadius: 8,
+        width: 140
+      },
   
-     
+      curso: {
+        backgroundColor: '#ffffff',
+        padding: 15,
+        borderRadius: 8,
+        marginBottom: 15,
+        elevation: 3,
+      },
+
+      cursoTitulo:{
+        color: '#1a4db3',
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+      },
+
+      btnCurso: {
+        backgroundColor: '#1a4db3',
+        paddingVertical: 10,
+        borderRadius: 6,
+        alignItems:'center',
+        marginTop: 10
+      },
+
+      textoBtnCurso: {
+        color: 'white',
+        fontSize: 10,
+        textAlign: 'center',
+        width: 80
+      },
+
+      cursoBtnLink: {
+        textAlign:'center'
+      },
+
+      cursoImagem: {
+        width: '100%',
+        height: 140,
+        backgroundColor: '#f5f5f5',
+        borderRadius: 6,
+        marginBottom: 10,
+        resizeMode:'contain'
+
+      },
+
+      cursoDescricao: {
+        textAlign: 'center',
+        color:'black',
+        fontSize: 16,
+        margin: 10
+      },
+
+      cursoCH: {
+        textAlign: 'center',
+        color:'black',
+        fontSize: 16,
+        margin: 10,
+        fontWeight: 'bold'
+      },
+
   
       rodape: {
         backgroundColor: '#1a4db3',
