@@ -9,65 +9,19 @@ import {
     TextInput
    } from 'react-native'; // Importa os componentes View e Text
    import {useState} from 'react';
-   import {Link} from 'expo-router';
+   import {Link, useLocalSearchParams} from 'expo-router';
    
-  export default function Cursos() {
-    const cursos = [
-      {
-        id: '1',
-        titulo: 'Desenvolvimento WEB',
-        img: require('../../assets/images/desweb.jpg'),
-        url: '/curso1',
-        descricao: 'Aprenda HTML, CSS, Javascript e práticas modernas de desenvolvimento',
-        ch: 40,
-        objetivo: 'Desenvolver páginas web modernas, responsivas e organizadas.',
-        publico: 'Indicado para estudantes iniciantes que desejam aprender desenvolvimento web.',
-        conteudo: 'HTML, CSS, JavaScript, responsividade, organização de arquivos e boas práticas.',
-        modalidade: 'Presencial com práticas em laboratório.',
-        nivel: 'Iniciante'
-      },
-
-      {
-        id: '2',
-        titulo: 'Informática Básica',
-        img: require('../../assets/images/info.jpg'),
-        url: '/curso2',
-        descricao: 'Domine o uso do computador e aplicativos essenciais',
-        ch: 30,
-        objetivo: 'Capacitar o aluno para utilizar o computador de forma segura, produtiva e organizada.',
-        publico: 'Indicado para quem deseja desenvolver conhecimentos básicos em informática.',
-        conteudo: 'Windows, internet, e-mail, organização de arquivos, Word, Excel e PowerPoint básico.',
-        modalidade: 'Presencial',
-        nivel: 'Básico'
-      },
-      
-      {
-        id: '3',
-        titulo: 'Desenvolvimento de Games',
-        img: require('../../assets/images/desgame.webp'),
-        url: '/curso3',
-        descricao: 'Aprenda a desenvolver games de forma legal e criativa',
-        ch: 80,
-        objetivo: 'Introduzir conceitos de criação de jogos, lógica de programação e desenvolvimento interativo.',
-        publico: 'Indicado para estudantes interessados em games, programação e criatividade digital.',
-        conteudo: 'Lógica de jogos, personagens, cenários, interatividade, mecânicas básicas e publicação de protótipos.',
-        modalidade: 'Presencial com atividades práticas',
-        nivel: 'Intermediário'
-      },
-
-
-    ];
-
-    const [busca, setBusca] = useState('');
-
-    const cursosFiltrados = cursos.filter( 
-      (curso) => {
-         return curso.titulo.toLowerCase().includes(busca.toLocaleLowerCase())
-      }
-
-    
-
-    )
+  export default function DetalhesCursos() {
+   
+   const {
+    titulo,
+    descricao,
+    ch,
+    objetivo,
+    conteudos,
+    modalidade,
+    nivel
+   } = useLocalSearchParams();
 
    return (
       <ScrollView>
@@ -100,72 +54,30 @@ import {
           </View>
 
           { /*=========== CONTEÚDO DA PÁGINA =============*/}
-          <View style={styles.cursos}>
-            <Text style={styles.tituloPagina}>
-              Nossos cursos
-            </Text>
+          <View style={styles.container}>
 
-            <TextInput
-              style={styles.buscarCursos}
-              placeholder="Buscar Cursos"
-              value={busca}
-              onChangeText={setBusca}
-            ></TextInput>
+            <View style={styles.cardDetalhes}>
+                {/* Aqui irão os dados do curso */}
+                <Text style={styles.etiqueta}>
+                    Curso TechEduca
+                </Text>
 
+                <Text style={styles.tituloCurso} >
+                    {titulo}
+                </Text>
 
-            <FlatList
-              data={cursosFiltrados}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                // card do curso aqui
-                <View style={styles.curso}>
+                <Text style={styles.descricaoCurso}>
+                    {descricao}
+                </Text>
 
-                  <Text style={styles.cursoTitulo}>
-                      {item.titulo}
-                  </Text>
-
-                  <Image style={styles.cursoImagem} source={item.img} ></Image>
-
-                  <Text style={styles.cursoDescricao}>
-                    {item.descricao}
-                  </Text>
-
-                  <Text style={styles.cursoCH}>
-                    CH: {item.ch}h
-                  </Text>
-
-                  <Link style={styles.cursoBtnLink} href={{
-                    pathname: '/detalhesCurso',
-                    params: {
-                      titulo: item.titulo,
-                      descricao: item.descricao,
-                      ch: item.ch,
-                      objetivo: item.objetivo,
-                      publico: item.publico,
-                      conteudos: item.conteudo,
-                      modalidade: item.modalidade,
-                      nivel: item.nivel
-                    },
-                  }} asChild>
-
-                    <TouchableOpacity style={styles.btnCurso}>
-                      <Text style={styles.textoBtnCurso}>
-                        Ver detalhes
-                      </Text>
-                    </TouchableOpacity>
-                    
-                  </Link>
-
+                <View style={styles.infoCurso}>
+                    <Text style={styles.infoLabel}>CH: </Text>
+                    <Text style={styles.infoValor}> {ch} </Text>
                 </View>
 
-              )} 
-            />
-            
-  
             </View>
 
-
-
+          </View>
 
           { /*=========== RODAPÉ =============*/}
           { /* Parte final da página */}
