@@ -1,152 +1,84 @@
-import {
-    View, // Para agrupar elementos (= div)
-    Text, // Para exibir textos (= p, h1...)
-    TouchableOpacity, // Para botões clicáveis (= button)
-    ScrollView, // Para a área principal com scroll,
-    StyleSheet // Para aplicar estilo na página
-   } from 'react-native'; // Importa os componentes View e Text
-   import {Link} from 'expo-router';
-   import Header from '../../components/Header'
-   import Footer from '../../components/Footer'
-   
-  export default function Sobre() {
-   return (
-       <ScrollView contentContainerStyle={styles.corpo}>
-          { /*=========== TOPO (HEADER) =============*/}
-          { /*=========== Área de cabeçalho com logo e menu =============*/}
-          <Header ativo = "sobre"> </Header>
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 
-          { /*=========== CONTEÚDO DA PÁGINA =============*/}
-          <View style={styles.sobre}>
-              <Text style={styles.titulo}>Sobre a TechEduca</Text>
-              <Text style={styles.texto}>A TechEduca é uma escola de tecnologia
-            focada em formação prática</Text>
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
 
-              <Text style={styles.subtitulo}>Nossa missão</Text>
-              <Text style={styles.texto}>Transformar vidas por meio da educação tecnológica</Text>
+export default function Sobre() {
+    return (
+        <ScrollView contentContainerStyle={styles.corpo}>
 
-              <Text style={styles.subtitulo}>Nossos Valores</Text>
-              <View style={styles.lista}>
-                  <Text style={styles.itemLista}>• Compromisso</Text>
-                  <Text style={styles.itemLista}>• Inovação</Text>
-                  <Text style={styles.itemLista}>• Transparência</Text>
+            <Header ativo="sobre" />
 
-              </View>
-          </View>
+            <View style={styles.container}>
 
-          { /*=========== RODAPÉ =============*/}
-          { /* Parte final da página */}
-          <Footer></Footer>
-  
-      </ScrollView>
-   );
-  }
-  
-  const styles = StyleSheet.create(
-    {
-      corpo: {
+                <Text style={styles.titulo}>
+                    Sobre o Café Central
+                </Text>
+
+                <View style={styles.card}>
+
+                    <Text style={styles.texto}>
+                        O Café Central nasceu com o objetivo de oferecer uma experiência única para os amantes de café.
+                    </Text>
+
+                    <Text style={styles.texto}>
+                        Trabalhamos com grãos selecionados, bebidas preparadas com cuidado e produtos frescos produzidos diariamente.
+                    </Text>
+
+                    <Text style={styles.texto}>
+                        Nosso ambiente foi pensado para proporcionar conforto, produtividade e bons momentos entre amigos e familiares.
+                    </Text>
+
+                    <Text style={styles.texto}>
+                        Mais do que uma cafeteria, buscamos criar um espaço onde cada visita se torne uma experiência especial.
+                    </Text>
+
+                </View>
+
+            </View>
+
+            <Footer />
+
+        </ScrollView>
+    )
+}
+
+const styles = StyleSheet.create({
+
+    corpo: {
         flexGrow: 1,
-        justifyContent: 'space-between',
-      },
-      topo: {
-        backgroundColor: '#1a4db3',
-        padding:20,
-        alignItems: 'center',
-        gap: 10,
-      },
-  
-      logoP1: {
-        color:'#ffffff',
-        fontSize:24,
-        fontWeight: 'bold',
-      },
-  
-      logoP2: {
-        color:'#ff6a00',
-        fontSize:24,
-        fontWeight: 'bold',
-      },
-  
-      menu: {
-        marginTop: 10,
-        alignItems: 'center',
-        gap: 10,
-      },
-  
-      menuItem: {
-        color: '#ffffff',
-        fontWeight: 'bold',
-      },
-  
-      ativo: {
-        color: '#ff6a00',
-      },
-      
-      sobre: {
-        padding: 20,
-        backgroundColor: "#ffffff"
-      },
+        backgroundColor: '#0f0f0f'
+    },
 
-      titulo: {
-        fontSize: 26,
-        fontWeight: 'bold',
-        marginBottom: 15,
-        textAlign: 'center'
-      },
+    container: {
+        width: '100%',
+        maxWidth: 430,
+        alignSelf: 'center',
+        padding: 20
+    },
 
-      subtitulo: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginTop: 20, 
-        marginBottom: 8,
-        textAlign: 'center'
-      },
-
-      texto: {
-        fontSize: 16,
-        lineHeight: 24,
-        textAlign: 'center'
-      },
-
-      lista: {
-        marginTop: 10,
-        alignItems: 'center'
-      },
-
-      itemLista: {
-        fontSize: 16,
-        marginBottom: 6,
-      },
-
-
-     
-  
-      rodape: {
-        backgroundColor: '#1a4db3',
-        padding: 20,
-        alignItems: 'center',
-        gap: 8,
-      },
-  
-      textoRodape: {
-        color : '#ffffff',
-        textAlign: 'center', 
-        marginBottom: 8,
-      },
-  
-      linkRodape: {
-        color: '#ff6a00',
-        fontWeight: 'bold',
-        textDecorationLine: 'none'
-      },
-  
-      tituloDestaque : {
-        color: '#1a4db3',
-        fontSize: 24,
+    titulo: {
+        color: '#ff4da6',
+        fontSize: 28,
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20
-      }
-  
+    },
+
+    card: {
+        backgroundColor: '#1c1c1c',
+        padding: 25,
+        borderRadius: 15,
+        borderWidth: 2,
+        borderColor: '#8a2be2'
+    },
+
+    texto: {
+        color: '#ffffff',
+        fontSize: 16,
+        lineHeight: 28,
+        marginBottom: 15,
+        textAlign: 'justify'
     }
-  )
+
+})

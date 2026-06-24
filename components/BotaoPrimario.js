@@ -12,12 +12,12 @@ export default function BotaoPrimario({texto,funcao}){
 
 const styles = StyleSheet.create({
         btnPrimario: {
-          backgroundColor: '#ff6a00',
-          paddingVertical: 12,
-          paddingHorizontal: 20,
-          borderRadius: 8,
-          marginTop: 10
-        },
+    backgroundColor: '#ff4da6',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 10
+},
 
         textoBotao: {
           color: '#ffffff',

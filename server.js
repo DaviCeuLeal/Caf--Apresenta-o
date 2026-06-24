@@ -17,10 +17,8 @@ const app = express();
         "https://rickjordan20.github.io" // Deploy no GitHub Pages
     ];
     app.use(cors({
-        origin: listOrigins, // Só aceita requisições dessas origens
-        credentials: true, // Permite envio de cookies de sessão
-        methods: ["GET","POST","PUT","DELETE","OPTIONS"], // Métodos HTTP permitidos
-        allowedHeaders: ["Content-Type","Authorization"] // Cabeçalhos aceitos
+    origin: true,
+    credentials: true
     }));
 
 // Configurações da API
@@ -66,6 +64,7 @@ app.get("/",(req,res)=>{
 
 // Rota de Cadastro
 app.post("/cadastro", async (req,res) => {
+    console.log("BODY RECEBIDO:", req.body);
     try{ 
         // 1 - Extrai os campos enviados no corpo da requisição (JSON)
         const{nome,email,senha} = req.body
@@ -97,31 +96,88 @@ app.post("/cadastro", async (req,res) => {
         res.json({mensagem: "Usuário cadastrado com sucesso"}); 
         
     } catch(erro){
-        console.log(erro);
-        res.status(500).json({erro: "Erro ao cadastrar usuário!"})
-    }
+    console.error("ERRO CADASTRO:", erro);
+    res.status(500).json({
+        erro: "Erro ao cadastrar usuário!",
+        detalhe: erro.message
+    });
+}
 })
 
 // Rota de Login
-app.post("/login",async (req,res)=>{
-    try{
-        const {email,senha} = req.body || {};
-        
-        if(!email || !senha){
-            return res.status(400).json({erro: "Preencha todos os campos"})
+// Rota de Login
+app.post("/login", async (req, res) => {
+    try {
+
+        const { email, senha } = req.body || {}
+
+        console.log("EMAIL RECEBIDO:", email)
+        console.log("SENHA RECEBIDA:", senha)
+
+        if (!email || !senha) {
+            return res.status(400).json({
+                erro: "Preencha todos os campos"
+            })
         }
 
-        const sql = `SELECT * FROM tb_usuarios
-                    WHERE email=?`
+        const [resultado] = await conexao.execute(
+            "SELECT * FROM tb_usuarios WHERE email=?",
+            [email]
+        )
 
-        const [resultado] = await conexao.execute(sql,[email])
+        if (resultado.length === 0) {
 
-        
-        if(resultado.length === 0){
-            return res.status(401).json({mensagem: "Usuário ou senha inválidos!"})
+            console.log("EMAIL NÃO ENCONTRADO")
+
+            return res.status(401).json({
+                erro: "Usuário ou senha inválidos!"
+            })
         }
 
-        const usuario = resultado[0]    
+        const usuario = resultado[0]
+
+        console.log("USUARIO ENCONTRADO:", usuario.email)
+        console.log("HASH DO BANCO:", usuario.senha)
+
+        const senhaCorreta = await bcrypt.compare(
+            senha,
+            usuario.senha
+        )
+
+        console.log("SENHA CORRETA?", senhaCorreta)
+
+        if (!senhaCorreta) {
+
+            return res.status(401).json({
+                erro: "Senha inválida"
+            })
+        }
+
+        req.session.usuario = {
+            id: usuario.id,
+            nome: usuario.nome,
+            email: usuario.email
+        }
+
+        res.json({
+            mensagem: "Login realizado com sucesso!"
+        })
+
+    } catch (erro) {
+
+        console.log("ERRO LOGIN:", erro)
+
+        res.status(500).json({
+            erro: "Erro ao realizar login"
+        })
+    }
+})
+
+const usuario = resultado[0]
+
+console.log("USUARIO ENCONTRADO:", usuario.email)
+console.log("SENHA DIGITADA:", senha)
+console.log("HASH:", usuario.senha)    
             // pega o primeiro e único resultado do SQL
         
         const senhaCorreta = await bcrypt.compare(senha,usuario.senha) 

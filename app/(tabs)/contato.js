@@ -1,303 +1,165 @@
-import {
-    View, // Para agrupar elementos (= div)
-    Text, // Para exibir textos (= p, h1...)
-    TouchableOpacity, // Para botões clicáveis (= button)
-    ScrollView, // Para a área principal com scroll,
-    StyleSheet, // Para aplicar estilo na página
-    TextInput
-   } from 'react-native'; // Importa os componentes View e Text
-  import {Link} from 'expo-router';
-  import {useState} from 'react';
-  import Header from '../../components/Header'
-  import Footer from '../../components/Footer'
+import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native'
+import { useState } from 'react'
 
- const API_URL = "http://localhost:3000"
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
+import BotaoPrimario from '../../components/BotaoPrimario'
+import MensagemSistema from '../../components/MensagemSistema'
 
-  export default function Contato() {
-   const[nome, setNome] = useState('');
-   const[email,setEmail] = useState('');
-   const[mensagem,setMensagem] = useState(''); 
+const API_URL = "http://127.0.0.1:3000"
 
-   const[mensagemSistema,setMensagemSistema] = useState('');
-   const[tipoMensagem, setTipoMensagem] = useState('');
+export default function Contato() {
 
-    async function validarFormulario(){
-      if(nome === ''){
-        setMensagemSistema('Digite seu nome');
-        setTipoMensagem('erro');
-        return;
-      }
-      if(/\d/.test(nome)){
-        setMensagemSistema("O nome não pode conter número!");
-        setTipoMensagem("erro");
-        return;
-      }
-      if(email === ''){
-        setMensagemSistema("Digite seu e-mail");
-        setTipoMensagem("erro");
-        return;
-      }
-      if(!email.includes('@') || !email.includes('.com')){
-        setMensagemSistema("Digite um e-mail válido");
-        setTipoMensagem("erro");
-        return;
-      }
-      if(mensagem === ''){
-        setMensagemSistema('Digite uma mensagem');
-        setTipoMensagem('erro');
-        return;
-      };
-      if(mensagem.length < 10){
-        setMensagemSistema('A mensagem deve ter pelo menos 10 caracteres');
-        setTipoMensagem('erro');
-        return;
-      } 
+    const [nome, setNome] = useState('')
+    const [email, setEmail] = useState('')
+    const [mensagem, setMensagem] = useState('')
 
-      //Tenta executar o bloco, se houver erro de rede, o código vai para o cath
-    try{
-      // Faz uma requisição HTTP para a rota da API usando o método POST
-      const resposta = await fetch(`${API_URL}/contato`,{
-        method: 'POST', // Define que a requisição vai ENVIAR DADOS
-        headers: {'Content-Type': 'application/json'}, // Informa que o corpo da requisição está JSON
-        credentials:'include', // Inclui cookies e sessão na requisição, útil para autenticação
-        body: JSON.stringify({
-          nome: nome,
-          email: email,
-          mensagem: mensagem
-        }) // Converte os dados de JavaScript para texto JSON antes de enviar
-      });
-      // Converte a resposta recebida da API de JSON para objeto JavaScript
-      const dados = await resposta.json() 
+    const [mensagemSistema, setMensagemSistema] = useState('')
+    const [tipoMensagem, setTipoMensagem] = useState('')
 
-      // Verifica se a resposta HTTP foi de sucesso
-      if(resposta.ok){
-        // Mostra a mensagem de sucesso vinda da API, 
-          //ou um texto padrão se ela não enviar nada
-        setMensagemSistema(dados.mensagem || "Mensagem enviada")
-        // Define o "estilo" da mensagem como sucesso
-        setTipoMensagem("sucesso")
-        // Limpa os campos do formulário
-        setNome('');
-        setEmail('');
-        setMensagem('');
-      } else{
-        // Mostra a mensagem de erro vinda da API,
-          // ou um texto padrão se ela não enviar nada
-        setMensagemSistema(dados.erro || "Erro ao ao enviar mensagem")
-        // Define o "estilo" da mensagem como erro
-        setTipoMensagem("erro") 
-      }
-    }catch(erro){
-      //  Executado quando acontece falha na conexão,
-        // como internet fora do ar ou servidor indisponivel
-      setMensagemSistema("Erro ao conectar com o servidor")
-      // Define o "estilo" da mensagem como erro
-      setTipoMensagem("erro")
+    async function enviarMensagem() {
+
+        if (!nome || !email || !mensagem) {
+            setMensagemSistema("Preencha todos os campos.")
+            setTipoMensagem("erro")
+            return
+        }
+
+        try {
+
+            const resposta = await fetch(`${API_URL}/contato`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    nome,
+                    email,
+                    mensagem
+                })
+            })
+
+            const dados = await resposta.json()
+
+            if (resposta.ok) {
+
+                setMensagemSistema(dados.mensagem)
+                setTipoMensagem("sucesso")
+
+                setNome('')
+                setEmail('')
+                setMensagem('')
+
+            } else {
+
+                setMensagemSistema(dados.erro)
+                setTipoMensagem("erro")
+
+            }
+
+        } catch (erro) {
+
+            console.log(erro)
+
+            setMensagemSistema("Erro ao conectar com o servidor")
+            setTipoMensagem("erro")
+
+        }
     }
-  }
-   return (
-       <ScrollView contentContainerStyle={styles.corpo}>
-          { /*=========== TOPO (HEADER) =============*/}
-          { /*=========== Área de cabeçalho com logo e menu =============*/}
-          <Header ativo="contato"></Header>
 
-          { /*=========== CONTEÚDO DA PÁGINA =============*/}
-          { /* Área principal da tela */}
-          <View style={styles.container}>
-          { /* Card branco que envolve o form */}
-            <View style={styles.cardContato}>
-              <Text style={styles.tituloPagina}>
-                Entre em contato
-              </Text>
-              <Text style={styles.subtitulo}>
-                Envie sua mensagem para nossa equipe
-              </Text>
+    return (
+        <ScrollView contentContainerStyle={styles.corpo}>
 
-              <TextInput style={styles.input}
-                        placeholder='Digite seu nome'
-                        value={nome} //exibe o estado da variavel
-                        onChangeText={setNome} // atualiza o estado da variavel
-              ></TextInput>
+            <Header ativo="contato" />
 
-              
-              <TextInput style={styles.input}
-                        placeholder='Digite seu e-mail'
-                        keyboardType='email-address'
-                        value={email} //exibe o estado da variavel
-                        onChangeText={setEmail} // atualiza o estado da variavel
-              ></TextInput>
+            <View style={styles.container}>
 
-              <TextInput style={styles.input}
-                        placeholder='Digite sua mensagem'
-                        multiline={true} // permite quebra de linha
-                        numberOfLines={5} //altura inicial do campo
-                        value={mensagem} //exibe o estado da variavel
-                        onChangeText={setMensagem} // atualiza o estado da variavel
-              ></TextInput>
-
-              <TouchableOpacity style={styles.btnEnviar}
-                                onPress={validarFormulario}>
-                <Text style={styles.textoBtn}>
-                  Enviar Mensagem
+                <Text style={styles.titulo}>
+                    Entre em Contato
                 </Text>
-              </TouchableOpacity>
 
-              <Text style={
-                tipoMensagem==='erro'
-                ? styles.mensagemErro
-                : styles.mensagemSucesso
-              }>
-                {mensagemSistema}
-              </Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nome"
+                    value={nome}
+                    onChangeText={setNome}
+                />
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                />
+
+                <TextInput
+                    style={styles.mensagem}
+                    placeholder="Digite sua mensagem"
+                    multiline
+                    value={mensagem}
+                    onChangeText={setMensagem}
+                />
+
+                <BotaoPrimario
+                    texto="Enviar"
+                    funcao={enviarMensagem}
+                />
+
+                <MensagemSistema
+                    mensagem={mensagemSistema}
+                    tipo={tipoMensagem}
+                />
 
             </View>
-          </View>
 
-          { /*=========== RODAPÉ =============*/}
-          { /* Parte final da página */}
-          <Footer></Footer>
+            <Footer />
 
-      </ScrollView>
-   );
-  }
-  
-  const styles = StyleSheet.create(
-    {
-      corpo: {
+        </ScrollView>
+    )
+}
+
+const styles = StyleSheet.create({
+
+    corpo: {
         flexGrow: 1,
-        justifyContent: 'space-between',
-      },
-      topo: {
-        backgroundColor: '#1a4db3',
-        padding:20,
-        alignItems: 'center',
-        gap: 10,
-      },
-  
-      logoP1: {
-        color:'#ffffff',
-        fontSize:24,
-        fontWeight: 'bold',
-      },
-  
-      logoP2: {
-        color:'#ff6a00',
-        fontSize:24,
-        fontWeight: 'bold',
-      },
-  
-      menu: {
-        marginTop: 10,
-        alignItems: 'center',
-        gap: 10,
-      },
-  
-      menuItem: {
-        color: '#ffffff',
-        fontWeight: 'bold',
-      },
-  
-      ativo: {
-        color: '#ff6a00',
-      },
-      
-      container: {
-        backgroundColor: '#f5f5f5',
-        padding: 20,
-      },
+        backgroundColor: '#0f0f0f'
+    },
 
-      cardContato: {
-        backgroundColor: '#ffffff',
-        padding: 25,
-        borderRadius: 10,
-        elevation: 3,
-        shadowColor: '#000',
-        shadowOpacity: 0.08,
-        shadowRadius: 4,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        }
-      },
+    container: {
+        width: '100%',
+        maxWidth: 430,
+        alignSelf: 'center',
+        padding: 20
+    },
 
-      tituloPagina:{
-        color: '#1a4db3',
+    titulo: {
+        color: '#ff4da6',
         fontSize: 28,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 10,
-      },
-
-      subtitulo: {
-        textAlign: 'center',
-        marginBottom: 10,
-        color: '#555'
-      },
-
-      input: {
-        borderColor: '#222',
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 15,
-        height: 50,
-        textAlignVertical: 'top'
-      },
-
-      btnEnviar: {
-        backgroundColor: '#1a4db3',
-        paddingVertical: 12,
-        borderRadius: 8,
-        alignItems: 'center'
-      },
-
-      textoBtn: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 16
-      },
-
-      mensagemErro: {
-        color: 'red',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginTop: 15
-      },
-
-      mensagemSucesso: {
-        color: 'green',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginTop: 15
-      },  
-     
-  
-      rodape: {
-        backgroundColor: '#1a4db3',
-        padding: 20,
-        alignItems: 'center',
-        gap: 8,
-      },
-  
-      textoRodape: {
-        color : '#ffffff',
-        textAlign: 'center', 
-        marginBottom: 8,
-      },
-  
-      linkRodape: {
-        color: '#ff6a00',
-        fontWeight: 'bold',
-        textDecorationLine: 'none'
-      },
-  
-      tituloDestaque : {
-        color: '#1a4db3',
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
         marginBottom: 20
-      }
-  
+    },
+
+    input: {
+        backgroundColor: '#1c1c1c',
+        color: '#fff',
+        borderWidth: 1,
+        borderColor: '#8a2be2',
+        borderRadius: 10,
+        padding: 12,
+        marginBottom: 12
+    },
+
+    mensagem: {
+        backgroundColor: '#1c1c1c',
+        color: '#fff',
+        borderWidth: 1,
+        borderColor: '#8a2be2',
+        borderRadius: 10,
+        padding: 12,
+        minHeight: 120,
+        textAlignVertical: 'top'
     }
-  )
+
+})
