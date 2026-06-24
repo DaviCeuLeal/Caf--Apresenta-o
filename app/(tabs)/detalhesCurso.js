@@ -10,6 +10,8 @@ import {
 } from 'react-native'; // Importa os componentes View e Text
 import { useState } from 'react';
 import { Link, useLocalSearchParams } from 'expo-router';
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
 
 export default function DetalhesCursos() {
 
@@ -25,34 +27,10 @@ export default function DetalhesCursos() {
   } = useLocalSearchParams();
 
   return (
-    <ScrollView>
+       <ScrollView contentContainerStyle={styles.corpo}>
       { /*=========== TOPO (HEADER) =============*/}
       { /*=========== Área de cabeçalho com logo e menu =============*/}
-      <View style={styles.topo}>
-
-        { /* Logo do sistema */}
-        <Link href='/'>
-          <Text style={styles.logoP1}>Tech</Text>
-          <Text style={styles.logoP2}>Educa</Text>
-        </Link>
-
-        { /* Menu de Navegação */}
-        <View style={styles.menu}>
-          <Link href='/'>
-            <Text style={styles.menuItem}> Início </Text>
-          </Link>
-          <Link href='/sobre'>
-            <Text style={styles.menuItem}> Sobre </Text>
-          </Link>
-          <Link href='/cursos'>
-            <Text style={[styles.menuItem, styles.ativo]}>Cursos</Text>
-          </Link>
-          <Link href='/contato'>
-            <Text style={styles.menuItem}> Contato </Text>
-          </Link>
-
-        </View>
-      </View>
+      <Header ativo = "cursos"> </Header>
 
       { /*=========== CONTEÚDO DA PÁGINA =============*/}
       <View style={styles.container}>
@@ -118,15 +96,7 @@ export default function DetalhesCursos() {
 
       { /*=========== RODAPÉ =============*/}
       { /* Parte final da página */}
-      <           View style={styles.rodape}>
-        { /* Texto de direitos de autorais */}
-        <Text style={styles.textoRodape}> 2026 TechEduca. Todos os direitos reservados.</Text>
-
-        { /* Links de Contato */}
-        <Link href='/contato'>
-          <Text style={styles.linkRodape}>Entre em contato</Text>'
-        </Link>
-      </View>
+      <Footer></Footer>
 
     </ScrollView>
   );
@@ -134,6 +104,10 @@ export default function DetalhesCursos() {
 
 const styles = StyleSheet.create(
   {
+    corpo: {
+        flexGrow: 1,
+        justifyContent: 'space-between',
+      },
     topo: {
       backgroundColor: '#1a4db3',
       padding: 20,

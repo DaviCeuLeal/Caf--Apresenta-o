@@ -8,8 +8,8 @@ import {
    } from 'react-native'; // Importa os componentes View e Text
    import {Link} from 'expo-router';
    import {useState} from 'react';
-   import {Header} from '../../components/Header'
-   import {Footer} from '../../components/Footer'
+   import Header from '../../components/Header'
+   import Footer from '../../components/Footer'
    const API_URL = "http://localhost:3000"
    
   export default function Cadastro() {
@@ -119,7 +119,7 @@ import {
   }
 
    return (
-      <ScrollView>
+       <ScrollView contentContainerStyle={styles.corpo}>
           { /*=========== TOPO (HEADER) =============*/}
           { /*=========== Área de cabeçalho com logo e menu =============*/}
           <Header ativo = "cadastro"> </Header>
@@ -199,6 +199,10 @@ import {
   
   const styles = StyleSheet.create(
     {
+      corpo: {
+        flexGrow: 1,
+        justifyContent: 'space-between',
+      },
       topo: {
         backgroundColor: '#1a4db3',
         padding:20,

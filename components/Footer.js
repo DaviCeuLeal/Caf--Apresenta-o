@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
       padding: 20,
       alignItems: 'center',
       gap: 8,
+      marginTop: 'auto', // empurra para baixo,
     },
 
     textoRodape: {
