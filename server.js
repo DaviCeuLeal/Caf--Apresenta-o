@@ -14,7 +14,7 @@ const app = express();
         "http://localhost:8081", // Expo no computador
         "http://localhost:5501", // Live Server do VS Code
         "http://127.0.0.1:5501", // Variação do Live Server
-        "https://rickjordan20.github.io" // Deploy no GitHub Pages
+        "https://DaviCeuLeal.github.io" // Deploy no GitHub Pages
     ];
     app.use(cors({
     origin: true,
@@ -59,7 +59,7 @@ app.get("/",(req,res)=>{
     // O primeiro parametro é o caminho, o segundo é a função de callback
     // req - objeto com os dados da requisição (vem do servidor)
     // res - objeto para enviar a resposta (vai para o user/site/app)
-    res.send("API TechEduca Mobile funcionando"); 
+    res.send("API Café funcionando"); 
 });
 
 // Rota de Cadastro
@@ -104,7 +104,6 @@ app.post("/cadastro", async (req,res) => {
 }
 })
 
-// Rota de Login
 // Rota de Login
 app.post("/login", async (req, res) => {
     try {
@@ -170,31 +169,6 @@ app.post("/login", async (req, res) => {
         res.status(500).json({
             erro: "Erro ao realizar login"
         })
-    }
-})
-
-const usuario = resultado[0]
-
-console.log("USUARIO ENCONTRADO:", usuario.email)
-console.log("SENHA DIGITADA:", senha)
-console.log("HASH:", usuario.senha)    
-            // pega o primeiro e único resultado do SQL
-        
-        const senhaCorreta = await bcrypt.compare(senha,usuario.senha) 
-            //compara a senha que usuário informou com a senha criptograda do banco
-
-        
-        if(!senhaCorreta){
-            // senha hash for diferente da senha digitada
-            return res.status(401).json({erro: "Senha inválida"});
-            // 401 - acesso não autorizado
-        };
-    
-        res.json({mensagem: "Login realizado com sucesso!"});
-    
-    } catch(erro){
-        console.log("Erro no Login: ",erro)
-        res.status(500).json({erro: "Erro ao cadastrar usuário"})
     }
 })
 
