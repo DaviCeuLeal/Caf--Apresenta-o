@@ -19,11 +19,17 @@ export default function Contato() {
 
     async function enviarMensagem() {
 
-        if (!nome || !email || !mensagem) {
-            setMensagemSistema("Preencha todos os campos.")
-            setTipoMensagem("erro")
-            return
-        }
+       if (!nome.trim() || !email.trim() || !mensagem.trim()) {
+    setMensagemSistema("Preencha todos os campos.")
+    setTipoMensagem("erro")
+    return
+}
+
+if (!email.includes('@')) {
+    setMensagemSistema("Digite um email válido.")
+    setTipoMensagem("erro")
+    return
+}
 
         try {
 
