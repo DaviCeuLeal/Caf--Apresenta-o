@@ -1,5 +1,4 @@
-import {TouchableOpacity, StyleSheet, Text} from 'react-native'
-import {Link} from 'expo-router'
+import { TouchableOpacity, StyleSheet, Text } from 'react-native'
 
 
 export default function BotaoPrimario({texto,funcao}){
