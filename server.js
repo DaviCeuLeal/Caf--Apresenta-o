@@ -92,7 +92,7 @@ app.post("/cadastro", async (req,res) => {
         const sql = `INSERT INTO tb_usuarios
                     (nome,email,senha)
                     VALUES(?,?,?)`
-        conexao.execute(sql,[nome,email,senhaHash])
+        await conexao.execute(sql,[nome,email,senhaHash])
         res.json({mensagem: "Usuário cadastrado com sucesso"}); 
         
     } catch(erro){
