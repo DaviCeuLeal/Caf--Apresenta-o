@@ -24,10 +24,10 @@ const styles = StyleSheet.create({
     mensagemErro: {
         backgroundColor: '#2b0000',
         color: '#ff6b6b',
-        padding: 12,
+        padding: 14,
         borderRadius: 8,
         textAlign: 'center',
-        marginTop: 15,
+        marginTop: 20,
         fontWeight: 'bold',
         borderWidth: 1,
         borderColor: '#ff4d4d'
@@ -36,10 +36,10 @@ const styles = StyleSheet.create({
     mensagemSucesso: {
         backgroundColor: '#102b10',
         color: '#66ff99',
-        padding: 12,
+        padding: 14,
         borderRadius: 8,
         textAlign: 'center',
-        marginTop: 15,
+        marginTop: 20,
         fontWeight: 'bold',
         borderWidth: 1,
         borderColor: '#66ff99'
